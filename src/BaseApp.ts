@@ -15,12 +15,21 @@ abstract class BaseApp extends Base {
 
   @Dependencies.inject(Dependency.EVENTS)
   static Events: typeof Events;
+  public getEvents(): typeof Events {
+    return BaseApp.Events;
+  }
 
   @Dependencies.inject(Dependency.DISCORD_CLIENT)
   static DiscordClient: typeof DiscordClient;
+  public getDiscordClient(): typeof DiscordClient {
+    return BaseApp.DiscordClient;
+  }
 
   @Dependencies.inject(Dependency.COMMAND_HANDLER)
   static CommandHandler: typeof CommandHandler;
+  public getCommandHandler(): typeof CommandHandler {
+    return BaseApp.CommandHandler;
+  }
 
   abstract init(): Promise<void>;
 
