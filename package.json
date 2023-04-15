@@ -4,7 +4,8 @@
   "description": "Template for creating Addons for the Modular Series",
   "main": "out/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "npx tsc && copyfiles -u 1 config/*.yml out/config"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@tsconfig/node18": "^1.0.1"
   },
+  "type": "module",
   "dependencies": {
     "ts-modular-bot-addon-command_handler-types": "github:therealemissions/ts-modular-bot-addon-command_handler-types",
     "ts-modular-bot-addon-discord_client-types": "github:therealemissions/ts-modular-bot-addon-discord_client-types",
