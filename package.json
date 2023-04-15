@@ -24,6 +24,7 @@
     "ts-modular-bot-addon-discord_client-types": "github:therealemissions/ts-modular-bot-addon-discord_client-types",
     "ts-modular-bot-addon-events-types": "github:therealemissions/ts-modular-bot-addon-events-types",
     "ts-modular-bot-file-design": "github:therealemissions/ts-modular-bot-file-design",
-    "ts-modular-bot-types": "github:therealemissions/ts-modular-bot-types"
+    "ts-modular-bot-types": "github:therealemissions/ts-modular-bot-types",
+    "yaml": "^2.2.1"
   }
 }
