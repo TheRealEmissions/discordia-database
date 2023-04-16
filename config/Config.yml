@@ -1,2 +1,20 @@
-someConfigValue:
-  anotherConfigValue: true
+database:
+  # -----
+  # 
+  # ONLY ONE CAN BE ENABLED
+  #
+  # -----
+  mongodb:
+    enabled: true
+    uri: "URI here"
+  mysql:
+    enabled: false
+    host: "host"
+    user: "user"
+    password: "pass"
+    database: "my_db"
+    waitForConnections: true
+    connectionLimit: 10
+    queueLimit: 0
+    maxIdle: 10
+    idleTimeout: 60000

@@ -1,45 +1,68 @@
 import Base from "ts-modular-bot-file-design";
 import { Dependencies, Dependency } from "ts-modular-bot-types";
 import Events from "ts-modular-bot-addon-events-types";
-import DiscordClient from "ts-modular-bot-addon-discord_client-types";
-import CommandHandler from "ts-modular-bot-addon-command_handler-types";
+import { Database } from "./Enums/Database";
+import { Config } from "../config/internal/Config";
+import { Model } from "./Model/Model";
+import { Schema, SchemaType } from "./Types/SchemaType";
+import { DatabaseModel } from "./Decorators/DatabaseModel";
+import { DatabaseSchema } from "./Decorators/DatabaseSchema";
 
 abstract class BaseApp extends Base {
   constructor() {
     super();
   }
 
-  type: Dependency = -1; // you need to set this to the correct type! (Dependency.MY_ADDON)
-  name: string = "Template"; // change this to the name of your addon!
-  load = false; // ensure this is true!
+  type: Dependency = Dependency.DATABASE; // you need to set this to the correct type! (Dependency.MY_ADDON)
+  name: string = "Database"; // change this to the name of your addon!
+  load = true; // ensure this is true!
 
-  @Dependencies.inject(Dependency.EVENTS)
-  static Events: typeof Events;
-  public getEvents(): typeof Events {
-    return BaseApp.Events;
+  private static database: Database = this.getDatabaseFromConfig();
+  private static getDatabaseFromConfig(): Database {
+    if (Config.database.mongodb.enabled) return Database.MONGODB;
+    if (Config.database.mysql.enabled) return Database.MYSQL;
+    throw new Error("No database enabled!");
+  }
+  static getDatabase(): Database {
+    return BaseApp.database;
   }
 
-  @Dependencies.inject(Dependency.DISCORD_CLIENT)
-  static DiscordClient: typeof DiscordClient;
-  public getDiscordClient(): typeof DiscordClient {
-    return BaseApp.DiscordClient;
+  private static schemas: Map<string, SchemaType<Schema>> = new Map();
+  static addSchema<T extends Schema>(name: string, model: SchemaType<T>) {
+    BaseApp.schemas.set(name, model);
   }
-
-  @Dependencies.inject(Dependency.COMMAND_HANDLER)
-  static CommandHandler: typeof CommandHandler;
-  public getCommandHandler(): typeof CommandHandler {
-    return BaseApp.CommandHandler;
+  static getSchema<T extends Schema>(name: string): SchemaType<T> {
+    const schema = BaseApp.schemas.get(name);
+    if (!schema) throw new Error(`Schema ${name} not found!`);
+    return schema as SchemaType<T>;
+  }
+  static getSchemas() {
+    return BaseApp.schemas;
   }
 
   abstract init(): Promise<void>;
 
+  public get DatabaseModel() {
+    return DatabaseModel;
+  }
+
+  public get DatabaseSchema() {
+    return DatabaseSchema;
+  }
+
+  public get Model() {
+    return Model;
+  }
+
+  @Dependencies.inject(Dependency.EVENTS)
+  static Events: typeof Events;
+  public getEvents() {
+    return BaseApp.Events;
+  }
+
   // Ensure that you specify the correct dependencies!
   getDependencies(): Dependency[] {
-    return [
-      Dependency.EVENTS,
-      Dependency.DISCORD_CLIENT,
-      Dependency.COMMAND_HANDLER,
-    ];
+    return [];
   }
 }
 

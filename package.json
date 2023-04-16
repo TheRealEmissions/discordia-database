@@ -1,7 +1,7 @@
 {
-  "name": "ts-modular-bot-template",
+  "name": "discordia-database",
   "version": "1.0.0",
-  "description": "Template for creating Addons for the Modular Series",
+  "description": "Database addon for Discordia",
   "main": "out/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,10 +18,15 @@
   },
   "homepage": "https://github.com/TheRealEmissions/ts-modular-bot-addon-template#readme",
   "devDependencies": {
-    "@tsconfig/node18": "^1.0.1"
+    "@tsconfig/node18": "^1.0.1",
+    "@types/mysql": "^2.15.21"
   },
   "type": "module",
   "dependencies": {
+    "mongoose": "^7.0.3",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.2.3",
+    "reflect-metadata": "^0.1.13",
     "ts-modular-bot-addon-command_handler-types": "github:therealemissions/ts-modular-bot-addon-command_handler-types",
     "ts-modular-bot-addon-discord_client-types": "github:therealemissions/ts-modular-bot-addon-discord_client-types",
     "ts-modular-bot-addon-events-types": "github:therealemissions/ts-modular-bot-addon-events-types",
