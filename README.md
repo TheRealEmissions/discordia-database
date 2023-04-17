@@ -109,6 +109,8 @@ export class YourModel extends BaseApp.Database.Model<YourSchema> {
 
 Here's a quick example:
 ```ts
+// WARNING: Remember not to import your models until *AFTER* init() has been called as
+// as the decorator accesses an injected addon (Database)
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
 
 // ... rest of the file ...

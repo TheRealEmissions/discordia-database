@@ -18,6 +18,11 @@ abstract class BaseApp extends Base {
 
   private static database: Database = this.getDatabaseFromConfig();
   private static getDatabaseFromConfig(): Database {
+    // check if 2 or more databases are enabled
+    if (Object.values(Config.database).filter((db) => db.enabled).length > 1) {
+      throw new Error("Only 1 database can be enabled!");
+    }
+
     if (Config.database.mongodb.enabled) return Database.MONGODB;
     if (Config.database.mysql.enabled) return Database.MYSQL;
     throw new Error("No database enabled!");
