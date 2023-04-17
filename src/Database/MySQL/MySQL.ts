@@ -2,6 +2,9 @@ import BaseApp from "../../BaseApp";
 import { Schema } from "../../Types/SchemaType";
 import { IDatabase } from "../IDatabase";
 import MYSQL from "mysql2/promise";
+import { TableBuilder } from "./TableBuilder";
+import { SearchQuery } from "../../Types/SearchQuery";
+import SQLString from "sql-template-strings";
 
 export class MySQL implements IDatabase<Schema> {
   constructor() {
@@ -101,6 +104,7 @@ export class MySQL implements IDatabase<Schema> {
         BaseApp.Events.GeneralEvents.DEBUG,
         `MySQL Connection ID: ${connection.threadId}`
       );
+      TableBuilder.build(this);
     });
 
     pool.on("release", (connection) => {
@@ -121,5 +125,42 @@ export class MySQL implements IDatabase<Schema> {
       BaseApp.Events.GeneralEvents.INFO,
       "MySQL Connected"
     );
+  }
+
+  private buildWhereQuery<T extends Schema>(query?: SearchQuery<T>) {
+    if (!query) return "";
+    let queryText = "";
+    for (const [key, value] of Object.entries(query)) {
+      if (queryText) queryText += " AND ";
+      let val;
+      if (Array.isArray(value)) {
+        val = SQLString`JSON_CONTAINS(${key}, '[${value.join(",")}]', '$.arr)`;
+      } else if (typeof value === "string")
+        val = `${key} = ` + SQLString`${value}`;
+      else if (typeof value === "number")
+        val = `${key} = ` + SQLString`${value}`;
+      else if (typeof value === "boolean")
+        val = `${key} = ` + SQLString`${value}`;
+      else if (value instanceof Date) val = `${key} = ` + SQLString`${value}`;
+      queryText += val;
+    }
+    return ` WHERE ${queryText}`;
+  }
+
+  async findAll<T extends Schema>(
+    modelName: string,
+    query?: SearchQuery<T>
+  ): Promise<object[]> {
+    const queryText = `SELECT * FROM ${modelName}${this.buildWhereQuery(
+      query
+    )}`;
+    const [rows] = await this.getConnection().execute(queryText);
+    const objs = [];
+    for (const row of rows as MYSQL.RowDataPacket[]) {
+      const obj = {};
+      for (const [key, value] of Object.entries(row)) {
+        // ! TO DO
+      }
+    }
   }
 }
