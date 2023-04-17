@@ -41,7 +41,7 @@ abstract class BaseApp extends Base {
 
   abstract init(): Promise<void>;
 
-  public get DatabaseSchema() {
+  public get Schema() {
     return DatabaseSchema;
   }
 
@@ -57,7 +57,7 @@ abstract class BaseApp extends Base {
 
   // Ensure that you specify the correct dependencies!
   getDependencies(): Dependency[] {
-    return [];
+    return [Dependency.EVENTS];
   }
 }
 

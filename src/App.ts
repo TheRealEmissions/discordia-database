@@ -4,6 +4,7 @@ import { IDatabase } from "./Database/IDatabase.js";
 import { Mongoose } from "./Database/MongoDB/Mongoose.js";
 import { MySQL } from "./Database/MySQL/MySQL.js";
 import { Database } from "./Enums/Database.js";
+import { UsersModel } from "./Example/UsersModel.js";
 import { Schema } from "./Types/SchemaType.js";
 
 class App extends BaseApp {
@@ -31,13 +32,13 @@ class App extends BaseApp {
     }
   }
 
-  async loadMongoDB() {
+  private async loadMongoDB() {
     const db = (App.databaseClass = new Mongoose());
     db.setUri(Config.database.mongodb.uri);
     await db.connect();
   }
 
-  async loadMySQL() {
+  private async loadMySQL() {
     const db = (App.databaseClass = new MySQL());
     db.setHost(Config.database.mysql.host);
     db.setUser(Config.database.mysql.user);
