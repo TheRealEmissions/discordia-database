@@ -27,6 +27,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.2.3",
     "reflect-metadata": "^0.1.13",
+    "sql-template-strings": "^2.2.2",
     "ts-modular-bot-addon-events-types": "github:therealemissions/ts-modular-bot-addon-events-types",
     "ts-modular-bot-file-design": "github:therealemissions/ts-modular-bot-file-design",
     "ts-modular-bot-types": "github:therealemissions/ts-modular-bot-types",
