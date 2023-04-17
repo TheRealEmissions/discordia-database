@@ -24,7 +24,7 @@ With more planned in the future, the following databases are currently supported
 
 You do not need to worry about installing any of these databases, as they are all installed as dependencies of this addon. Nor do you need to worry about setting up the database, as this addon will do that for you.
 
-# What data types are supported?
+## What data types are supported?
 
 As this addon is designed to be used for simple projects, it only supports the following data types:
 - String
