@@ -31,6 +31,8 @@ abstract class BaseApp extends Base {
   static Database: typeof Database;
 
   // ... rest of the class ...
+
+  // Make sure to add the dependency to the getDependencies() method!
 }
 ```
 
@@ -109,7 +111,7 @@ The Model class is the main class that you will be using to interact with your d
 - `DocumentConstructor` is an interface that is used to define the data that is used to create a document. It is an object that contains the key and value that you want to create, taking into account optionality and default values.
 
 
-# `Model#findAll(query?: SearchQuery)`
+### `Model#findAll(query?: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema>[]>`
 **Description:** Finds all documents that match the query.
 **Example use:**
@@ -119,7 +121,7 @@ const model = new YourModel();
 const documents = await model.findAll({ yourKey: "DevRoom" });
 ```
 
-# `Model#findAllAndDelete(query?: SearchQuery)`
+### `Model#findAllAndDelete(query?: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema>[]>`
 **Description:** Finds all documents that match the query and deletes them.
 **Example use:**
@@ -129,7 +131,7 @@ const model = new YourModel();
 const documentsDeleted = await model.findAllAndDelete({ yourKey: "DevRoom" })
 ```
 
-# `Model#findAllAndUpdate(query: SearchQuery | undefined, data: DocumentConstructor)`
+### `Model#findAllAndUpdate(query: SearchQuery | undefined, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema>[]>`
 **Description:** Finds all documents that match the query and updates them with the data.
 **Example use:**
@@ -141,7 +143,7 @@ const documentsUpdated = await model.findAllAndUpdate({yourKey: "DevRoom", data:
 }});
 ```
 
-# `Model#replaceAll(query: SearchQuery | undefined, data: DocumentConstructor)`
+### `Model#replaceAll(query: SearchQuery | undefined, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema>[]>`
 **Description:** Finds all documents that match the query and replaces them with the data.
 **Example use:**
@@ -154,7 +156,7 @@ const documentsReplaced = await model.replaceAll({yourKey: "DevRoom", data: {
 }});
 ```
 
-# `Model#findOne(query: SearchQuery)`
+### `Model#findOne(query: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema> | null>`
 **Description:** Finds the first document that matches the query.
 **Example use:**
@@ -164,7 +166,7 @@ const model = new YourModel();
 const document = await model.findOne({ yourKey: "DevRoom" });
 ```
 
-# `Model#findOneAndDelete(query: SearchQuery)`
+### `Model#findOneAndDelete(query: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema> | null>`
 **Description:** Finds the first document that matches the query and deletes it.
 **Example use:**
@@ -174,7 +176,7 @@ const model = new YourModel();
 const document = await model.findOneAndDelete({ yourKey: "DevRoom" });
 ```
 
-# `Model#findOneAndUpdate(query: SearchQuery, data: DocumentConstructor)`
+### `Model#findOneAndUpdate(query: SearchQuery, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema> | null>`
 **Description:** Finds the first document that matches the query and updates it with the data.
 **Example use:**
@@ -184,7 +186,7 @@ const model = new YourModel();
 const document = await model.findOneAndUpdate({ yourKey: "DevRoom"}, { anotherKey: 6 });
 ```
 
-# `Model#replaceOne(query: SearchQuery, data: DocumentConstructor)`
+### `Model#replaceOne(query: SearchQuery, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema> | null>`
 **Description:** Finds the first document that matches the query and replaces it with the data.
 **Example use:**
@@ -194,7 +196,7 @@ const model = new YourModel();
 const document = await model.replaceOne({ yourKey: "DevRoom"}, { yourKey: "BuildRoom", anotherKey: 6 }); // although anotherKey is specified here, it *isn't* required on replacement as it has a default value
 ```
 
-# `Model#new(data: DocumentConstructor)`
+### `Model#new(data: DocumentConstructor)`
 **Returns:** `Document<YourSchema>`
 **Description:** Creates a new document with the data (does not save it to the database).
 **Example use:**
@@ -213,7 +215,7 @@ try {
 }
 ```
 
-# `Model#create(data: DocumentConstructor)`
+### `Model#create(data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema>>`
 **Description:** Creates a new document with the data and saves it to the database.
 **Example use:**
@@ -223,7 +225,7 @@ const model = new YourModel();
 const document = await model.create({ yourKey: "DevRoom" });
 ```
 
-# `Model#createMany(data: DocumentConstructor[])`
+### `Model#createMany(data: DocumentConstructor[])`
 **Returns:** `Promise<Document<YourSchema>[]>`
 **Description:** Creates multiple documents with the data and saves them to the database.
 **Example use:**
@@ -236,7 +238,7 @@ const documents = await model.createMany([
 ]);
 ```
 
-# `Model#deleteOne(query: SearchQuery)`
+### `Model#deleteOne(query: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema> | null>`
 **Description:** Finds the first document that matches the query and deletes it, if the document cannot be found it will return `null`
 **Example use:**
@@ -246,7 +248,7 @@ const model = new YourModel();
 const document = await model.deleteOne({ yourKey: "DevRoom" });
 ```
 
-# `Model#deleteMany(query: SearchQuery)`
+### `Model#deleteMany(query: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema>[]>`
 **Description:** Finds all documents that match the query and deletes them.
 **Example use:**
@@ -258,7 +260,7 @@ const documents = await model.deleteMany({
 });
 ```
 
-# `Model#updateOne(query: SearchQuery, data: DocumentConstructor)`
+### `Model#updateOne(query: SearchQuery, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema> | null>`
 **Description:** Finds the first document that matches the query and updates it with the data, if the document cannot be found it will return `null`
 **Example use:**
@@ -268,7 +270,7 @@ const model = new YourModel();
 const document = await model.updateOne({yourKey: "DevRoom"}, { anotherKey: 6 }); // updates only what you specify!
 ```
 
-# `Model#updateMany(query: SearchQuery, data: DocumentConstructor)`
+### `Model#updateMany(query: SearchQuery, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema>[]>`
 **Description:** Finds all documents that match the query and updates them with the data.
 **Example use:**
@@ -278,7 +280,7 @@ const model = new YourModel();
 const documents = await model.updateMany({yourKey: "DevRoom"}, { anotherKey: 6 }); // updates only what you specify!
 ```
 
-# `Model#count(query?: SearchQuery)`
+### `Model#count(query?: SearchQuery)`
 **Returns:** `Promise<number>`
 **Description:** Counts the number of documents that match the query.
 **Example use:**
@@ -289,7 +291,7 @@ const count = await model.count({ yourKey: "DevRoom" });
 const totalCount = await model.count();
 ```
 
-# `Model#exists(query: SearchQuery)`
+### `Model#exists(query: SearchQuery)`
 **Returns:** `Promise<boolean>`
 **Description:** Checks if a document exists that matches the query.
 **Example use:**
