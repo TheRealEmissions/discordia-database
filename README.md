@@ -16,6 +16,14 @@ _This module intentionally does not support any complex methods such as inner jo
 - Built-in type-safety for your data.
 - Object-oriented design that allows you to manage your data in a more organised way.
 
+## What databases are supported?
+
+With more planned in the future, the following databases are currently supported:
+- MongoDB
+- MySQL
+
+You do not need to worry about installing any of these databases, as they are all installed as dependencies of this addon. Nor do you need to worry about setting up the database, as this addon will do that for you.
+
 How do I use this module?
 ===
 
