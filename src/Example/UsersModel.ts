@@ -4,6 +4,8 @@ import { Schema, SchemaType } from "../Types/SchemaType.js";
 
 interface UserSchema extends Schema {
   type?: string;
+  another?: number;
+  wow: boolean;
 }
 
 export class UsersModel extends Model<UserSchema> {
@@ -14,7 +16,14 @@ export class UsersModel extends Model<UserSchema> {
       required: false,
       default: "hello",
     },
+    another: {
+      type: Number,
+      required: false,
+      default: 5,
+    },
+    wow: {
+      type: Boolean,
+      required: true,
+    },
   };
-
-  test() {}
 }

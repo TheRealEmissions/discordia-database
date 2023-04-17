@@ -52,7 +52,7 @@ export abstract class Model<T extends Schema> {
    */
   async findAllAndUpdate(
     query: SearchQuery<T> | undefined,
-    data: DocumentConstructor<T>
+    data: Partial<DocumentConstructor<T>>
   ): Promise<Document<Required<Schema & T>>[]> {
     const database = App.getDatabaseClass();
     const result = await database.findAllAndUpdate(
