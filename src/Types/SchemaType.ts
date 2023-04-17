@@ -1,4 +1,6 @@
-export interface Schema {}
+export interface Schema {
+  _id?: string;
+}
 
 export type KeyValueType<T> = (T extends any[]
   ? {
@@ -8,9 +10,7 @@ export type KeyValueType<T> = (T extends any[]
         ? NumberConstructor[]
         : T extends boolean[]
         ? BooleanConstructor[]
-        : T extends Date[]
-        ? DateConstructor[]
-        : never;
+        : DateConstructor[];
     }
   : {
       type: T extends string
@@ -19,12 +19,10 @@ export type KeyValueType<T> = (T extends any[]
         ? NumberConstructor
         : T extends boolean
         ? BooleanConstructor
-        : T extends Date
-        ? DateConstructor
-        : never;
+        : DateConstructor;
     }) &
-  ({ required: false; default?: T } | { required: true } | {});
+  ({ required: false; default: Exclude<T, undefined> } | { required: true });
 
 export type SchemaType<T extends Schema> = {
-  [K in keyof T]: KeyValueType<T[K]>;
+  [K in keyof T]: Exclude<KeyValueType<T[K]>, undefined>;
 };

@@ -3,7 +3,7 @@ import { Model } from "../Model/Model.js";
 import { Schema, SchemaType } from "../Types/SchemaType.js";
 
 interface UserSchema extends Schema {
-  type: string;
+  type?: string;
 }
 
 export class UsersModel extends Model<UserSchema> {
@@ -11,7 +11,8 @@ export class UsersModel extends Model<UserSchema> {
   static x: SchemaType<UserSchema> = {
     type: {
       type: String,
-      required: true,
+      required: false,
+      default: "hello",
     },
   };
 }

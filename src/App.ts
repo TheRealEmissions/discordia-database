@@ -1,16 +1,18 @@
 import { Config } from "../config/internal/Config.js";
 import BaseApp from "./BaseApp.js";
+import { IDatabase } from "./Database/IDatabase.js";
 import { Mongoose } from "./Database/MongoDB/Mongoose.js";
 import { MySQL } from "./Database/MySQL/MySQL.js";
 import { Database } from "./Enums/Database.js";
+import { Schema } from "./Types/SchemaType.js";
 
 class App extends BaseApp {
   constructor() {
     super();
   }
 
-  private databaseClass!: MySQL | Mongoose;
-  public getDatabaseClass() {
+  private static databaseClass: IDatabase<Schema>;
+  public static getDatabaseClass() {
     return this.databaseClass;
   }
 
@@ -30,13 +32,13 @@ class App extends BaseApp {
   }
 
   async loadMongoDB() {
-    const db = (this.databaseClass = new Mongoose());
+    const db = (App.databaseClass = new Mongoose());
     db.setUri(Config.database.mongodb.uri);
     await db.connect();
   }
 
   async loadMySQL() {
-    const db = (this.databaseClass = new MySQL());
+    const db = (App.databaseClass = new MySQL());
     db.setHost(Config.database.mysql.host);
     db.setUser(Config.database.mysql.user);
     db.setPassword(Config.database.mysql.password);

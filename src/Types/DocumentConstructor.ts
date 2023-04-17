@@ -1,3 +1,3 @@
-import { SearchQuery } from "./SearchQuery.js";
-
-export type DocumentConstructor<T> = SearchQuery<T>;
+export type DocumentConstructor<T> = {
+  [key in keyof T]: T[key];
+};

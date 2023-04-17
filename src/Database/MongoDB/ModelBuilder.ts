@@ -6,7 +6,7 @@ export class ModelBuilder {
   public static build() {
     const schemas = BaseApp.getSchemas();
     for (const [name, schema] of schemas) {
-      const model = Mongoose.model(name, new Mongoose.Schema(schema));
+      const model = Mongoose.model<Schema>(name, new Mongoose.Schema(schema));
       this.models.set(name, model);
     }
   }

@@ -5,7 +5,6 @@ import { Database } from "./Enums/Database";
 import { Config } from "../config/internal/Config";
 import { Model } from "./Model/Model";
 import { Schema, SchemaType } from "./Types/SchemaType";
-import { DatabaseModel } from "./Decorators/DatabaseModel";
 import { DatabaseSchema } from "./Decorators/DatabaseSchema";
 
 abstract class BaseApp extends Base {
@@ -41,10 +40,6 @@ abstract class BaseApp extends Base {
   }
 
   abstract init(): Promise<void>;
-
-  public get DatabaseModel() {
-    return DatabaseModel;
-  }
 
   public get DatabaseSchema() {
     return DatabaseSchema;
