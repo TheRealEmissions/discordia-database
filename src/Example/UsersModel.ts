@@ -15,4 +15,6 @@ export class UsersModel extends Model<UserSchema> {
       default: "hello",
     },
   };
+
+  test() {}
 }
