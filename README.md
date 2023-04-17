@@ -24,6 +24,19 @@ With more planned in the future, the following databases are currently supported
 
 You do not need to worry about installing any of these databases, as they are all installed as dependencies of this addon. Nor do you need to worry about setting up the database, as this addon will do that for you.
 
+# What data types are supported?
+
+As this addon is designed to be used for simple projects, it only supports the following data types:
+- String
+- Number
+- Boolean
+- Date
+- Array
+
+In MongoDB, Arrays are stored directly in the document, while in MySQL, Arrays are stored as a JSON string.
+
+**WARNING:** It is highly **NOT recommended** to use Arrays for storing data due to the fact that they are not indexed in MongoDB, and are stored as a JSON string in MySQL. This means that you will not be able to search for data in an Array.
+
 How do I use this module?
 ===
 
