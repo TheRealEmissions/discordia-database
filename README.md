@@ -123,7 +123,9 @@ const documents = await model.findAll({ yourKey: "DevRoom" });
 
 ### `Model#findAllAndDelete(query?: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema>[]>`
+
 **Description:** Finds all documents that match the query and deletes them.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -133,7 +135,9 @@ const documentsDeleted = await model.findAllAndDelete({ yourKey: "DevRoom" })
 
 ### `Model#findAllAndUpdate(query: SearchQuery | undefined, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema>[]>`
+
 **Description:** Finds all documents that match the query and updates them with the data.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -145,7 +149,9 @@ const documentsUpdated = await model.findAllAndUpdate({yourKey: "DevRoom", data:
 
 ### `Model#replaceAll(query: SearchQuery | undefined, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema>[]>`
+
 **Description:** Finds all documents that match the query and replaces them with the data.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -158,7 +164,9 @@ const documentsReplaced = await model.replaceAll({yourKey: "DevRoom", data: {
 
 ### `Model#findOne(query: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema> | null>`
+
 **Description:** Finds the first document that matches the query.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -168,7 +176,9 @@ const document = await model.findOne({ yourKey: "DevRoom" });
 
 ### `Model#findOneAndDelete(query: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema> | null>`
+
 **Description:** Finds the first document that matches the query and deletes it.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -178,7 +188,9 @@ const document = await model.findOneAndDelete({ yourKey: "DevRoom" });
 
 ### `Model#findOneAndUpdate(query: SearchQuery, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema> | null>`
+
 **Description:** Finds the first document that matches the query and updates it with the data.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -188,7 +200,9 @@ const document = await model.findOneAndUpdate({ yourKey: "DevRoom"}, { anotherKe
 
 ### `Model#replaceOne(query: SearchQuery, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema> | null>`
+
 **Description:** Finds the first document that matches the query and replaces it with the data.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -198,7 +212,9 @@ const document = await model.replaceOne({ yourKey: "DevRoom"}, { yourKey: "Build
 
 ### `Model#new(data: DocumentConstructor)`
 **Returns:** `Document<YourSchema>`
+
 **Description:** Creates a new document with the data (does not save it to the database).
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -217,7 +233,9 @@ try {
 
 ### `Model#create(data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema>>`
+
 **Description:** Creates a new document with the data and saves it to the database.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -227,7 +245,9 @@ const document = await model.create({ yourKey: "DevRoom" });
 
 ### `Model#createMany(data: DocumentConstructor[])`
 **Returns:** `Promise<Document<YourSchema>[]>`
+
 **Description:** Creates multiple documents with the data and saves them to the database.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -240,7 +260,9 @@ const documents = await model.createMany([
 
 ### `Model#deleteOne(query: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema> | null>`
+
 **Description:** Finds the first document that matches the query and deletes it, if the document cannot be found it will return `null`
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -250,7 +272,9 @@ const document = await model.deleteOne({ yourKey: "DevRoom" });
 
 ### `Model#deleteMany(query: SearchQuery)`
 **Returns:** `Promise<Document<YourSchema>[]>`
+
 **Description:** Finds all documents that match the query and deletes them.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -262,7 +286,9 @@ const documents = await model.deleteMany({
 
 ### `Model#updateOne(query: SearchQuery, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema> | null>`
+
 **Description:** Finds the first document that matches the query and updates it with the data, if the document cannot be found it will return `null`
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -272,7 +298,9 @@ const document = await model.updateOne({yourKey: "DevRoom"}, { anotherKey: 6 });
 
 ### `Model#updateMany(query: SearchQuery, data: DocumentConstructor)`
 **Returns:** `Promise<Document<YourSchema>[]>`
+
 **Description:** Finds all documents that match the query and updates them with the data.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -282,7 +310,9 @@ const documents = await model.updateMany({yourKey: "DevRoom"}, { anotherKey: 6 }
 
 ### `Model#count(query?: SearchQuery)`
 **Returns:** `Promise<number>`
+
 **Description:** Counts the number of documents that match the query.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
@@ -293,7 +323,9 @@ const totalCount = await model.count();
 
 ### `Model#exists(query: SearchQuery)`
 **Returns:** `Promise<boolean>`
+
 **Description:** Checks if a document exists that matches the query.
+
 **Example use:**
 ```ts
 import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
