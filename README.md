@@ -1,84 +1,300 @@
-Base of Discordia
+Database Addon
 ===
 
-This is the Base of Discordia. Discordia attempts to create a fully modular, drop-in-and-go system for Discord Bots which enables developers to develop for a singular system. This system is designed to be as modular as possible, and as such, is designed to be as easy to use as possible.
+**This addon is not intended to be a replacement for a well-made database system.**
 
-Helper NPM Modules
-===
-The Base of Modular Series comes with a few helper modules to make your life easier. They often include abstract classes, interfaces and more. They'll help with development.
+This addon is intended to be a simple, lightweight, and easy to use database system for Discordia **if you only need to store simple information**. It is not intended to be a replacement for a well-made database system, but rather a simple database system that can be used for simple projects.
 
-All commands start with `npm i --save`, following a space and:
-- discordia-file-design
-- discordia-types
-- discordia-tsconfig
+_This module intentionally does not support any complex methods such as inner joins, outer joins, populations._
 
-Both `discordia-file-design` and `discordia-types` are required modules for developing with the Modular Series. Not using them may result in errors. 
+## Why is this addon useful?
 
-To ensure compatibility between modules, please ensure you are using the tsconfig.json file provided by `discordia-tsconfig`. This is a required module for developing with the Modular Series. Not using it may result in errors. You can import it into your own `tsconfig.json` with the following:
-```json
-{
-  "extends": "discordia-tsconfig/tsconfig.json"
-}
-```
+- With out-of-the-box support for many different databases, this addon allows users to easily switch between databases without having to duplicate code for multiple different databases.
+- This addon also allows you to easily create models with schemas, which allows you to easily validate your data.
+- It's quick and easy to set up and use in your project.
+- No need to worry about setting up your own database logic.
+- Built-in type-safety for your data.
+- Object-oriented design that allows you to manage your data in a more organised way.
 
-Helper Addons
+How do I use this module?
 ===
 
-Although you won't be implementing these addons into your specific addon, you'll still be able to access their functionality.
-All addons contain a free types module that can be downloaded from NPM.
-
-All addons' types follow the same pattern when published to NPM and will always be published by `realemissions`.
-- Format: `discordia-<addonname>-types`
-
-For each module you wish to use, you should bind a variable to your BaseApp class (you can call this whatever you please):
+You simply need to inject the module into your addon.
 ```ts
+import Database from "discordia-database-types";
 
-import { Base } from 'discordia-file-design';
-import { Dependency, Dependencies } from 'discordia-types';
+abstract class BaseApp extends Base {
 
-class BaseApp extends Base {
-  // ...
+  // ... rest of the class ...
 
-  @Dependencies.inject(Dependency.MY_ADDON)
-  static myAddon!: MyAddon;
+  @Dependencies.inject(Dependency.DATABASE)
+  static Database: typeof Database;
 
-  // ...
+  // ... rest of the class ...
 }
 ```
-where MyAddon refers to the interface provided by the types module you have downloaded.
-You should then declare an injection using the `@Dependencies.inject(Dependency)` decorator as shown above where Dependency is the enum provided by `discordia-types`. You may need to download the development version of `discordia-types` if your addon is not yet published - development versions will contain all unpublished addons after request.
 
-Addons that import one another will not approved. If two addons each want to import the other and contain functionality that would be useful, each author should contact one another to discuss the possibility of merging the two addons into one or abstracting their addons more and expanding their addons into more addons to allow the import of one another's addons.
+From here you can use its functionality similar to how you would use other injected modules.
 
-Availability of the injection occurs after the first call of init(). You should not attempt to use the injection before this point.
+## Creating a model with a schema
 
-Developing with the Modular Series
-===
+```ts
+import { Schema, SchemaType } from "discordia-database-types";
+import BaseApp from "@src/BaseApp.js"; // @src is the src folder of your addon
 
-Full documentation can be found <here>.
+interface YourSchema extends Schema {
+  yourKey: string;
+  anotherKey?: number; // Optional on document creation
+}
 
-As a TL;DR, all modules should follow this particular format and be coded in TypeScript.
-- The name of the folder for the addon should be descriptive enough to ensure just by reading it you are knowledgeable of what it is.
-- You should have an index.ts file which exports the main class of the addon as default and any further exports necessary, such as enums. (explained further down)
-- You should have a `src` folder in the root of your addon.
-- The `src` folder should contain:
-  - `BaseApp.ts` which should be an abstract class and which extends `Base` from `ts-modular-bot-file-design`
-  - `App.ts` which extends `BaseApp.ts`
-  - Any other folders & files necessary for your project.
-- `App.ts`'s main purpose is for functionality.
-- `BaseApp.ts`'s main purpose is for definition.
-- If you've setup your `tsconfig.json` correctly, you'll be able to compile to JavaScript using `npx tsc` - ensure you do this **prior** to posting a new update.
-- Your package.json entry file should be `out/index.js`
-- Your package.json types property should be `types/<addon>/index.d.ts`
-- Your package.json type property should be `module` (import and export is superior!)
+export class YourModel extends BaseApp.Database.Model<YourSchema> {
+  @BaseApp.Database.Schema
+  static whateverYouNameThisWillBeTheCollectionName: SchemaType<YourSchema> = {
+    yourKey: {
+      type: String,
+      required: true,
+    },
+    anotherKey: {
+      type: Number,
+      required: false,
+      default: 0
+    },
+  };
 
-Get setup fast
-===
+  // A quick example of how you can use the model!
+  async create(key: string) {
+    let doc = await this.create({ yourKey: key }); // returns Document<YourSchema>
 
-Run this command in terminal to get setup fast with addon creation:
+    doc.data.yourKey = "another key!"; // acceptable as yourKey is a string
+    doc.data.yourKey = 69; // invalid!
 
-`git clone therealemissions/discordia-template`
 
-This will get you setup immediately with all the files you need. You should then run
+    try {
+      doc = await doc.save();
+    } catch (e) {
+      BaseApp.Events.getEventEmitter().emit(BaseApp.Events.GeneralEvents.ERROR, e);
+      throw e;
+    }
+    console.log(doc); // { data: { yourKey: "another key!", anotherKey: 0}, ... helper methods ... }
 
-`npm i --save`
+    return doc;
+  }
+}
+```
+
+## Using a model
+
+Here's a quick example:
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+
+// ... rest of the file ...
+
+const model = new YourModel();
+const document = await model.create("DevRoom");
+const foundDocument = await model.findOne({ yourKey: "DevRoom" });
+const deletedDocument = await model.deleteOne({ yourKey: "DevRoom"});
+
+// ... rest of the file ...
+```
+
+## The Model Class and its functionality
+
+The Model class is the main class that you will be using to interact with your database, it is extended on your created models. It is a wrapper around the database drivers that allows you to easily create, find, update, and delete documents.
+
+*Note:* You don't need to worry about type-casting methods, such as casting `findAll<YourSchema>` as the addon automatically assumes types based on your model.
+
+- `Document` is a class that is returned by the model class, it is a wrapper around the data that is returned from the database driver. It allows you to easily access the data and also provides helper methods to easily update the data.
+- `SearchQuery` is an interface that is used to define the query that is used to find documents. It is an object that contains the key and value that you want to search for.
+- `DocumentConstructor` is an interface that is used to define the data that is used to create a document. It is an object that contains the key and value that you want to create, taking into account optionality and default values.
+
+
+# `Model#findAll(query?: SearchQuery)`
+**Returns:** `Promise<Document<YourSchema>[]>`
+**Description:** Finds all documents that match the query.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const documents = await model.findAll({ yourKey: "DevRoom" });
+```
+
+# `Model#findAllAndDelete(query?: SearchQuery)`
+**Returns:** `Promise<Document<YourSchema>[]>`
+**Description:** Finds all documents that match the query and deletes them.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const documentsDeleted = await model.findAllAndDelete({ yourKey: "DevRoom" })
+```
+
+# `Model#findAllAndUpdate(query: SearchQuery | undefined, data: DocumentConstructor)`
+**Returns:** `Promise<Document<YourSchema>[]>`
+**Description:** Finds all documents that match the query and updates them with the data.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const documentsUpdated = await model.findAllAndUpdate({yourKey: "DevRoom", data: {
+  anotherKey: 6
+}});
+```
+
+# `Model#replaceAll(query: SearchQuery | undefined, data: DocumentConstructor)`
+**Returns:** `Promise<Document<YourSchema>[]>`
+**Description:** Finds all documents that match the query and replaces them with the data.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const documentsReplaced = await model.replaceAll({yourKey: "DevRoom", data: {
+  yourKey: "DevRoom"
+  // as per the YourSchema example, anotherKey is has a default value and is therefore not required on replacement
+}});
+```
+
+# `Model#findOne(query: SearchQuery)`
+**Returns:** `Promise<Document<YourSchema> | null>`
+**Description:** Finds the first document that matches the query.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const document = await model.findOne({ yourKey: "DevRoom" });
+```
+
+# `Model#findOneAndDelete(query: SearchQuery)`
+**Returns:** `Promise<Document<YourSchema> | null>`
+**Description:** Finds the first document that matches the query and deletes it.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const document = await model.findOneAndDelete({ yourKey: "DevRoom" });
+```
+
+# `Model#findOneAndUpdate(query: SearchQuery, data: DocumentConstructor)`
+**Returns:** `Promise<Document<YourSchema> | null>`
+**Description:** Finds the first document that matches the query and updates it with the data.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const document = await model.findOneAndUpdate({ yourKey: "DevRoom"}, { anotherKey: 6 });
+```
+
+# `Model#replaceOne(query: SearchQuery, data: DocumentConstructor)`
+**Returns:** `Promise<Document<YourSchema> | null>`
+**Description:** Finds the first document that matches the query and replaces it with the data.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const document = await model.replaceOne({ yourKey: "DevRoom"}, { yourKey: "BuildRoom", anotherKey: 6 }); // although anotherKey is specified here, it *isn't* required on replacement as it has a default value
+```
+
+# `Model#new(data: DocumentConstructor)`
+**Returns:** `Document<YourSchema>`
+**Description:** Creates a new document with the data (does not save it to the database).
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const document = model.new({ yourKey: "DevRoom" });
+
+// The document is currently not saved in the database!
+// You can save it by calling document.save()
+
+try {
+  await document.save();
+} catch (e) {
+  throw e;
+}
+```
+
+# `Model#create(data: DocumentConstructor)`
+**Returns:** `Promise<Document<YourSchema>>`
+**Description:** Creates a new document with the data and saves it to the database.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const document = await model.create({ yourKey: "DevRoom" });
+```
+
+# `Model#createMany(data: DocumentConstructor[])`
+**Returns:** `Promise<Document<YourSchema>[]>`
+**Description:** Creates multiple documents with the data and saves them to the database.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const documents = await model.createMany([
+  { yourKey: "DevRoom" },
+  { yourKey: "BuildRoom" }
+]);
+```
+
+# `Model#deleteOne(query: SearchQuery)`
+**Returns:** `Promise<Document<YourSchema> | null>`
+**Description:** Finds the first document that matches the query and deletes it, if the document cannot be found it will return `null`
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const document = await model.deleteOne({ yourKey: "DevRoom" });
+```
+
+# `Model#deleteMany(query: SearchQuery)`
+**Returns:** `Promise<Document<YourSchema>[]>`
+**Description:** Finds all documents that match the query and deletes them.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const documents = await model.deleteMany({
+  yourKey: "DevRoom"
+});
+```
+
+# `Model#updateOne(query: SearchQuery, data: DocumentConstructor)`
+**Returns:** `Promise<Document<YourSchema> | null>`
+**Description:** Finds the first document that matches the query and updates it with the data, if the document cannot be found it will return `null`
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const document = await model.updateOne({yourKey: "DevRoom"}, { anotherKey: 6 }); // updates only what you specify!
+```
+
+# `Model#updateMany(query: SearchQuery, data: DocumentConstructor)`
+**Returns:** `Promise<Document<YourSchema>[]>`
+**Description:** Finds all documents that match the query and updates them with the data.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const documents = await model.updateMany({yourKey: "DevRoom"}, { anotherKey: 6 }); // updates only what you specify!
+```
+
+# `Model#count(query?: SearchQuery)`
+**Returns:** `Promise<number>`
+**Description:** Counts the number of documents that match the query.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const count = await model.count({ yourKey: "DevRoom" });
+const totalCount = await model.count();
+```
+
+# `Model#exists(query: SearchQuery)`
+**Returns:** `Promise<boolean>`
+**Description:** Checks if a document exists that matches the query.
+**Example use:**
+```ts
+import { YourModel } from "@src/models/YourModel.js"; // an example location of your model
+const model = new YourModel();
+const exists = await model.exists({ yourKey: "DevRoom" });
+```
