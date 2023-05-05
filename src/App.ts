@@ -2,9 +2,7 @@ import { Config } from "../config/internal/Config.js";
 import BaseApp from "./BaseApp.js";
 import { IDatabase } from "./Database/IDatabase.js";
 import { Mongoose } from "./Database/MongoDB/Mongoose.js";
-import { MySQL } from "./Database/MySQL/MySQL.js";
 import { Database } from "./Enums/Database.js";
-import { UsersModel } from "./Example/UsersModel.js";
 import { Schema } from "./Types/SchemaType.js";
 
 class App extends BaseApp {
@@ -27,8 +25,10 @@ class App extends BaseApp {
     switch (database) {
       case Database.MONGODB:
         this.loadMongoDB();
-      case Database.MYSQL:
-        this.loadMySQL();
+        break;
+      // case Database.MYSQL:
+      //   this.loadMySQL();
+      //   break;
     }
   }
 
@@ -38,18 +38,18 @@ class App extends BaseApp {
     await db.connect();
   }
 
-  private async loadMySQL() {
-    const db = (App.databaseClass = new MySQL());
-    db.setHost(Config.database.mysql.host);
-    db.setUser(Config.database.mysql.user);
-    db.setPassword(Config.database.mysql.password);
-    db.setDatabase(Config.database.mysql.database);
-    db.setWaitForConnections(Config.database.mysql.waitForConnections);
-    db.setConnectionLimit(Config.database.mysql.connectionLimit);
-    db.setQueueLimit(Config.database.mysql.queueLimit);
-    db.setMaxIdle(Config.database.mysql.maxIdle);
-    await db.connect();
-  }
+  // private async loadMySQL() {
+  //   const db = (App.databaseClass = new MySQL());
+  //   db.setHost(Config.database.mysql.host);
+  //   db.setUser(Config.database.mysql.user);
+  //   db.setPassword(Config.database.mysql.password);
+  //   db.setDatabase(Config.database.mysql.database);
+  //   db.setWaitForConnections(Config.database.mysql.waitForConnections);
+  //   db.setConnectionLimit(Config.database.mysql.connectionLimit);
+  //   db.setQueueLimit(Config.database.mysql.queueLimit);
+  //   db.setMaxIdle(Config.database.mysql.maxIdle);
+  //   await db.connect();
+  // }
 }
 
 export default App;

@@ -33,6 +33,8 @@ abstract class BaseApp extends Base {
 
   private static schemas: Map<string, SchemaType<Schema>> = new Map();
   static addSchema<T extends Schema>(name: string, model: SchemaType<T>) {
+    if (BaseApp.schemas.has(name))
+      throw new Error(`Schema ${name} already exists!`);
     BaseApp.schemas.set(name, model);
   }
   static getSchema<T extends Schema>(name: string): SchemaType<T> {

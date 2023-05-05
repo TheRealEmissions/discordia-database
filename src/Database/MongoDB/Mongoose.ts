@@ -31,6 +31,10 @@ export class Mongoose implements IDatabase<Schema> {
     return model as unknown as MongoDB.Model<T>;
   }
 
+  public build() {
+    ModelBuilder.build();
+  }
+
   async connect(): Promise<void> {
     BaseApp.Events.getEventEmitter().emit(
       BaseApp.Events.GeneralEvents.INFO,

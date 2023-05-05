@@ -127,6 +127,10 @@ export class MySQL implements IDatabase<Schema> {
     );
   }
 
+  build() {
+    throw new Error("Method not implemented.");
+  }
+
   private buildWhereQuery<T extends Schema>(query?: SearchQuery<T>) {
     if (!query) return "";
     let queryText = "";

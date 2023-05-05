@@ -1,10 +1,10 @@
 import { DocumentConstructor } from "../Types/DocumentConstructor";
 import { Schema } from "../Types/SchemaType";
 import { SearchQuery } from "../Types/SearchQuery";
-import MongoDB from "mongoose";
 
 export interface IDatabase<T extends Schema> {
   connect(): Promise<void>;
+  build(): void;
   findAll(modelName: string, query?: SearchQuery<T>): Promise<object[]>;
   findAllAndDelete(
     modelName: string,
