@@ -19,7 +19,8 @@
   "homepage": "https://github.com/TheRealEmissions/ts-modular-bot-addon-template#readme",
   "devDependencies": {
     "@tsconfig/node18": "^1.0.1",
-    "@types/mysql": "^2.15.21"
+    "@types/mysql": "^2.15.21",
+    "copyfiles": "^2.4.1"
   },
   "type": "module",
   "dependencies": {

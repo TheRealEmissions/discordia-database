@@ -5,6 +5,7 @@ import MYSQL from "mysql2/promise";
 import { TableBuilder } from "./TableBuilder";
 import { SearchQuery } from "../../Types/SearchQuery";
 import SQLString from "sql-template-strings";
+import { DocumentConstructor } from "../../Types/DocumentConstructor";
 
 export class MySQL implements IDatabase<Schema> {
   constructor() {
@@ -12,6 +13,87 @@ export class MySQL implements IDatabase<Schema> {
       BaseApp.Events.GeneralEvents.DEBUG,
       "Launching MySQL"
     );
+  }
+  findAllAndDelete(
+    modelName: string,
+    query?: SearchQuery<Schema> | undefined
+  ): Promise<object[]> {
+    throw new Error("Method not implemented.");
+  }
+  findAllAndUpdate(
+    modelName: string,
+    query: SearchQuery<Schema> | undefined,
+    data: DocumentConstructor<Schema>
+  ): Promise<object[]> {
+    throw new Error("Method not implemented.");
+  }
+  findOne(
+    modelName: string,
+    query: SearchQuery<Schema>
+  ): Promise<object | null> {
+    throw new Error("Method not implemented.");
+  }
+  findOneAndDelete(
+    modelName: string,
+    query: SearchQuery<Schema>
+  ): Promise<object | null> {
+    throw new Error("Method not implemented.");
+  }
+  findOneAndUpdate(
+    modelName: string,
+    query: SearchQuery<Schema>,
+    data: DocumentConstructor<Schema>
+  ): Promise<object | null> {
+    throw new Error("Method not implemented.");
+  }
+  replaceOne(
+    modelName: string,
+    query: SearchQuery<Schema>,
+    data: DocumentConstructor<Schema>
+  ): Promise<object | null> {
+    throw new Error("Method not implemented.");
+  }
+  replaceAll(
+    modelName: string,
+    query: SearchQuery<Schema> | undefined,
+    data: DocumentConstructor<Schema>
+  ): Promise<object[]> {
+    throw new Error("Method not implemented.");
+  }
+  create(
+    modelName: string,
+    data: DocumentConstructor<Schema>
+  ): Promise<object> {
+    throw new Error("Method not implemented.");
+  }
+  createMany(
+    modelName: string,
+    data: DocumentConstructor<Schema>[]
+  ): Promise<object[]> {
+    throw new Error("Method not implemented.");
+  }
+  deleteOne(
+    modelName: string,
+    query: SearchQuery<Schema>
+  ): Promise<object | null> {
+    throw new Error("Method not implemented.");
+  }
+  deleteMany(modelName: string, query: SearchQuery<Schema>): Promise<object[]> {
+    throw new Error("Method not implemented.");
+  }
+  updateOne(
+    modelName: string,
+    query: SearchQuery<Schema>,
+    data: DocumentConstructor<Schema>
+  ): Promise<object | null> {
+    throw new Error("Method not implemented.");
+  }
+  updateMany(
+    modelName: string,
+    query: SearchQuery<Schema>,
+    data: DocumentConstructor<Schema>
+  ): Promise<object[]> {
+    throw new Error("Method not implemented.");
   }
 
   //#region VARIABLES
@@ -151,20 +233,19 @@ export class MySQL implements IDatabase<Schema> {
     return ` WHERE ${queryText}`;
   }
 
-  async findAll<T extends Schema>(
-    modelName: string,
-    query?: SearchQuery<T>
-  ): Promise<object[]> {
+  async findAll<T extends Schema>(modelName: string, query?: SearchQuery<T>) {
     const queryText = `SELECT * FROM ${modelName}${this.buildWhereQuery(
       query
     )}`;
     const [rows] = await this.getConnection().execute(queryText);
-    const objs = [];
+    const objs: Object[] = [];
     for (const row of rows as MYSQL.RowDataPacket[]) {
       const obj = {};
       for (const [key, value] of Object.entries(row)) {
         // ! TO DO
       }
     }
+
+    return objs;
   }
 }
