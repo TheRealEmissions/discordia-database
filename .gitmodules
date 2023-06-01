@@ -1,4 +1,4 @@
-[submodule "types"]
+[submodule "Database Types"]
 	path = types
 	url = https://github.com/therealemissions/discordia-database-types.git
 	branch = ada
