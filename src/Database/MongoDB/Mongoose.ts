@@ -94,11 +94,10 @@ export class Mongoose implements IDatabase<Schema> {
     query?: SearchQuery<T>
   ): Promise<object[]> {
     const model = this.getModel(modelName);
-    const docs = await model
+    return model
       .find(this.transformQuery(query) ?? {})
       .lean()
       .exec();
-    return docs;
   }
 
   async findAllAndDelete<T extends MongoSchema>(
@@ -150,8 +149,7 @@ export class Mongoose implements IDatabase<Schema> {
     query: SearchQuery<T>
   ): Promise<object | null> {
     const model = this.getModel(modelName);
-    const doc = await model.findOne(this.transformQuery(query)).lean().exec();
-    return doc;
+    return model.findOne(this.transformQuery(query)).lean().exec();
   }
 
   async findOneAndDelete<T extends MongoSchema>(
@@ -159,11 +157,7 @@ export class Mongoose implements IDatabase<Schema> {
     query: SearchQuery<T>
   ): Promise<object | null> {
     const model = this.getModel(modelName);
-    const doc = await model
-      .findOneAndDelete(this.transformQuery(query))
-      .lean()
-      .exec();
-    return doc;
+    return model.findOneAndDelete(this.transformQuery(query)).lean().exec();
   }
 
   async findOneAndUpdate<T extends MongoSchema>(
@@ -172,11 +166,10 @@ export class Mongoose implements IDatabase<Schema> {
     data: DocumentConstructor<T>
   ): Promise<object | null> {
     const model = this.getModel(modelName);
-    const doc = await model
+    return model
       .findOneAndUpdate(this.transformQuery(query), { $set: data })
       .lean()
       .exec();
-    return doc;
   }
 
   async replaceOne<T extends MongoSchema>(
@@ -185,11 +178,7 @@ export class Mongoose implements IDatabase<Schema> {
     data: DocumentConstructor<T>
   ): Promise<object | null> {
     const model = this.getModel(modelName);
-    const doc = await model
-      .replaceOne(this.transformQuery(query), data)
-      .lean()
-      .exec();
-    return doc;
+    return model.replaceOne(this.transformQuery(query), data).lean().exec();
   }
 
   async create<T extends MongoSchema>(
@@ -197,8 +186,7 @@ export class Mongoose implements IDatabase<Schema> {
     data: DocumentConstructor<T>
   ): Promise<object> {
     const model = this.getModel(modelName);
-    const doc = await model.create(this.transformQuery(data));
-    return doc;
+    return model.create(this.transformQuery(data));
   }
 
   async createMany<T extends MongoSchema>(
@@ -206,8 +194,7 @@ export class Mongoose implements IDatabase<Schema> {
     data: DocumentConstructor<T>[]
   ): Promise<object[]> {
     const model = this.getModel(modelName);
-    const docs = await model.insertMany(this.transformQuery(data));
-    return docs;
+    return model.insertMany(this.transformQuery(data));
   }
 
   async updateOne<T extends MongoSchema>(
@@ -216,13 +203,12 @@ export class Mongoose implements IDatabase<Schema> {
     data: DocumentConstructor<T>
   ): Promise<object | null> {
     const model = this.getModel(modelName);
-    const doc = await model
+    return model
       .updateOne(this.transformQuery(query), {
         $set: this.transformQuery(data),
       })
       .lean()
       .exec();
-    return doc;
   }
 
   async updateMany<T extends MongoSchema>(
@@ -244,8 +230,7 @@ export class Mongoose implements IDatabase<Schema> {
     query: SearchQuery<T>
   ): Promise<object | null> {
     const model = this.getModel(modelName);
-    const doc = await model.deleteOne(this.transformQuery(query)).lean().exec();
-    return doc;
+    return model.deleteOne(this.transformQuery(query)).lean().exec();
   }
 
   async deleteMany<T extends MongoSchema>(
