@@ -1,6 +1,6 @@
 import Base from "ts-modular-bot-file-design";
 import { Dependencies, Dependency } from "ada-types";
-import Events from "ts-modular-bot-addon-events-types";
+import Events from "ada-events-types";
 import { Database } from "./Enums/Database";
 import { Config } from "../config/internal/Config";
 import { Model } from "./Model/Model";
