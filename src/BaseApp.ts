@@ -1,4 +1,4 @@
-import Base from "ts-modular-bot-file-design";
+import Base from "ada-file-design";
 import { Dependencies, Dependency } from "ada-types";
 import Events from "ada-events-types";
 import { Database } from "./Enums/Database";
@@ -12,9 +12,9 @@ abstract class BaseApp extends Base {
     super();
   }
 
-  type: Dependency = Dependency.DATABASE; // you need to set this to the correct type! (Dependency.MY_ADDON)
-  name: string = "Database"; // change this to the name of your addon!
-  load = true; // ensure this is true!
+  type: Dependency = Dependency.DATABASE;
+  name: string = "Database";
+  load = true;
 
   private static database: Database = this.getDatabaseFromConfig();
   private static getDatabaseFromConfig(): Database {

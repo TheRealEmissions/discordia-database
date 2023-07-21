@@ -26,13 +26,13 @@
   "type": "module",
   "dependencies": {
     "ada-events-types": "github:therealemissions/discordia-events-types#ada",
+    "ada-file-design": "github:therealemissions/ada-file-design",
     "ada-types": "github:therealemissions/ada-types",
     "mongoose": "^7.0.3",
     "mysql": "^2.18.1",
     "mysql2": "^3.2.3",
     "reflect-metadata": "^0.1.13",
     "sql-template-strings": "^2.2.2",
-    "ts-modular-bot-file-design": "github:therealemissions/ts-modular-bot-file-design",
     "yaml": "^2.2.1"
   }
 }
